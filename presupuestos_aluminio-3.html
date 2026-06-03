@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presupuestos · Taller de Aluminio y Cristal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f1ea;--card:#fbfaf6;--ink:#1c1b18;--ink-soft:#5a564d;--line:#d9d3c6;
+    --accent:#d8572a;--accent-dark:#b8431d;--steel:#2b3a42;--good:#2f6f4f;
+    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px -12px rgba(28,27,24,.25);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:'Public Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.45;padding:0 0 90px;
+    background-image:radial-gradient(circle at 1px 1px, rgba(28,27,24,.04) 1px, transparent 0);background-size:22px 22px}
+  .wrap{max-width:700px;margin:0 auto;padding:0 16px}
+  header{background:var(--steel);color:#f4f1ea;padding:22px 0 20px;border-bottom:3px solid var(--accent);margin-bottom:16px}
+  header .wrap{display:flex;align-items:center;gap:13px}
+  .logo{width:42px;height:42px;flex:none;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:grid;place-items:center;color:#fff;font-family:'Sora';font-weight:800;font-size:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+  header h1{font-family:'Sora';font-weight:700;font-size:18px;letter-spacing:-.02em;line-height:1.15}
+  header p{font-size:12.5px;color:#b9c2c6;font-weight:500;margin-top:1px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 15px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .sec-title{font-family:'Sora';font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--steel);
+    display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .sec-title .n{width:22px;height:22px;flex:none;background:var(--accent);color:#fff;border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:800}
+  .hint{font-size:12px;color:var(--ink-soft);margin:-6px 0 13px}
+
+  label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row>.field{flex:1;min-width:110px}
+  .field{margin-bottom:12px}
+  input[type=text],select{width:100%;padding:11px 12px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;
+    border:1.5px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+  select{font-family:'Public Sans';font-weight:500}
+  input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(216,87,42,.13)}
+  .suffix{position:relative}
+  .suffix>span{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12.5px;color:var(--ink-soft);font-weight:600;pointer-events:none}
+  .suffix input{padding-right:42px}
+
+  .addbtn{width:100%;padding:11px;border:1.5px dashed var(--accent);background:rgba(216,87,42,.05);color:var(--accent-dark);
+    font-weight:700;font-family:'Public Sans';font-size:13.5px;border-radius:10px;cursor:pointer}
+  .addbtn:hover{background:rgba(216,87,42,.1)}
+
+  .tarifa{display:grid;grid-template-columns:1.5fr 1fr 1fr 34px;gap:7px;align-items:center;margin-bottom:8px}
+  .tarifa input,.tarifa select{padding:9px 10px;font-size:13.5px}
+  .tarifa .del{border:1.5px solid var(--line);background:#fff;border-radius:8px;font-size:16px;color:var(--ink-soft);cursor:pointer;height:38px}
+  .tarifa .del:hover{border-color:var(--accent);color:var(--accent)}
+  .tline{display:grid;grid-template-columns:1.6fr 1fr;gap:8px;align-items:center;margin-bottom:7px}
+  .tline span{font-size:12.5px;color:var(--ink-soft);font-weight:600}
+
+  .seg{display:flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:12px}
+  .seg button{flex:1;padding:11px 6px;background:#fff;border:none;font-family:'Public Sans';font-weight:600;font-size:12.5px;color:var(--ink-soft);cursor:pointer;border-right:1.5px solid var(--line)}
+  .seg button:last-child{border-right:none}
+  .seg button.on{background:var(--accent);color:#fff}
+
+  .chk{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fff;cursor:pointer;user-select:none}
+  .chk input{width:18px;height:18px;flex:none;accent-color:var(--accent);cursor:pointer}
+  .chk .lab{flex:1;font-size:13px;font-weight:600;color:var(--ink)}
+  .chk.on{border-color:var(--accent);background:rgba(216,87,42,.04)}
+
+  details{margin-bottom:14px}
+  details>summary{list-style:none;cursor:pointer}
+  details>summary::-webkit-details-marker{display:none}
+  .acc-head{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 15px;box-shadow:var(--shadow)}
+  .acc-head .t{font-family:'Sora';font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--steel)}
+  .acc-head .chev{transition:transform .2s;color:var(--accent);font-weight:800}
+  details[open] .acc-head{border-radius:12px 12px 0 0;border-bottom:none}
+  details[open] .chev{transform:rotate(180deg)}
+  .acc-body{border:1px solid var(--line);border-top:none;border-radius:0 0 12px 12px;padding:16px 15px;background:var(--card)}
+  .subhead{font-family:'Sora';font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--accent-dark);margin:6px 0 9px}
+  .div{height:1px;background:var(--line);margin:16px 0}
+
+  .linea{border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:11px;background:#fff;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .linea .lh{display:flex;gap:8px;margin-bottom:10px}
+  .linea .lh input{flex:1;font-family:'Public Sans';font-weight:600}
+  .linea .del{flex:none;width:38px;border:1.5px solid var(--line);background:#fff;border-radius:9px;font-size:17px;color:var(--ink-soft);cursor:pointer}
+  .linea .del:hover{border-color:var(--accent);color:var(--accent)}
+  .linea .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+  .linea .g3 label{font-size:11px}
+  .linea .ltot{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--line);padding-top:9px;font-size:12.5px}
+  .linea .ltot .l{color:var(--ink-soft);font-weight:600}
+  .linea .ltot .r{font-family:'JetBrains Mono';font-weight:700;font-size:15px;color:var(--steel)}
+  .linea .meta{font-size:11px;color:var(--ink-soft);margin-top:3px;font-family:'JetBrains Mono'}
+
+  .result{background:var(--steel);color:#eef1f0;border-radius:16px;padding:20px 18px 22px;box-shadow:0 14px 36px -16px rgba(43,58,66,.7)}
+  .result .rt{font-family:'Sora';font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#9fb0b6;margin-bottom:16px}
+  .br{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;font-size:13.5px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .br .k{color:#bcc8cc;font-weight:500}
+  .br .v{font-family:'JetBrains Mono';font-weight:700;font-size:14.5px;color:#fff}
+  .br.muted .v{color:#cdd6d9;font-weight:500}
+  .time-box{display:flex;gap:10px;margin:14px 0;padding:13px;background:rgba(216,87,42,.16);border:1px solid rgba(216,87,42,.4);border-radius:11px;align-items:center}
+  .time-box .icon{font-size:20px}
+  .time-box .tt{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:#f3c4ac;font-weight:700}
+  .time-box .tv{font-family:'Sora';font-weight:700;font-size:20px;color:#fff;line-height:1.1}
+  .total{display:flex;justify-content:space-between;align-items:flex-end;margin-top:16px;padding-top:14px;border-top:2px solid var(--accent)}
+  .total .tl{font-family:'Sora';font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:#fff}
+  .total .tv{font-family:'Sora';font-weight:800;font-size:30px;color:var(--accent);letter-spacing:-.02em;line-height:1}
+
+  .actions{display:flex;gap:10px;margin-top:14px}
+  .actions button{flex:1;padding:13px;border-radius:11px;font-family:'Sora';font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--steel)}
+  .actions .print{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .actions button:active{transform:translateY(1px)}
+  .savemsg{text-align:center;font-size:11.5px;color:var(--ink-soft);margin-top:12px}
+  .savemsg b{color:var(--accent-dark)}
+
+  #printDoc{display:none}
+  @media print{
+    body{background:#fff;padding:0;background-image:none}
+    .card,header,details,.actions,.savemsg{display:none!important}
+    #printDoc{display:block;padding:0}
+    .pd-head{display:flex;justify-content:space-between;border-bottom:2px solid #000;padding-bottom:10px;margin-bottom:16px}
+    .pd-head h2{font-family:'Sora';font-size:20px}
+    .pd-head .meta{font-size:12px;text-align:right;color:#333}
+    table.pd{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:16px}
+    table.pd th{text-align:left;border-bottom:1.5px solid #000;padding:7px 6px;font-family:'Sora';font-size:11px;text-transform:uppercase}
+    table.pd td{padding:7px 6px;border-bottom:1px solid #ccc;vertical-align:top}
+    table.pd td.r,table.pd th.r{text-align:right;font-family:'JetBrains Mono'}
+    .pd-tot{margin-left:auto;width:60%}
+    .pd-tot div{display:flex;justify-content:space-between;padding:5px 6px;font-size:13px}
+    .pd-tot .grand{border-top:2px solid #000;font-family:'Sora';font-weight:800;font-size:17px;padding-top:9px;margin-top:4px}
+    .pd-foot{margin-top:24px;font-size:11px;color:#555;border-top:1px solid #ccc;padding-top:8px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="logo">AL</div>
+    <div><h1>Calculadora de Presupuestos</h1><p>Taller de aluminio y cristal · Tenerife</p></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- AJUSTES DEL TALLER (persistente) -->
+  <details id="ajustes">
+    <summary><div class="acc-head"><span class="t">⚙️ Ajustes del taller (se guardan)</span><span class="chev">▾</span></div></summary>
+    <div class="acc-body">
+
+      <div class="subhead">Materiales y tarifas</div>
+      <div class="hint">Pon tus precios una vez. Se aplican a todas las partidas según m² o por unidad.</div>
+      <div id="tarifas"></div>
+      <button class="addbtn" id="addTarifa">+ Añadir material</button>
+
+      <div class="div"></div>
+      <div class="subhead">Mano de obra</div>
+      <div class="seg" id="moSeg">
+        <button data-m="pct">% del material</button>
+        <button data-m="horas">Horas × tarifa</button>
+        <button data-m="fija">Fija / unidad</button>
+      </div>
+      <div id="mo-pct" class="mo-panel">
+        <div class="field"><label>Porcentaje sobre el material</label><div class="suffix"><input id="pctMO" type="text" inputmode="decimal"><span>%</span></div></div>
+      </div>
+      <div id="mo-horas" class="mo-panel" style="display:none">
+        <div class="row">
+          <div class="field"><label>Horas totales</label><div class="suffix"><input id="horasMO" type="text" inputmode="decimal"><span>h</span></div></div>
+          <div class="field"><label>Precio por hora</label><div class="suffix"><input id="precioHora" type="text" inputmode="decimal"><span>€/h</span></div></div>
+        </div>
+        <button class="addbtn" id="usarTiempo" style="padding:9px;font-size:12px">↑ Usar el tiempo de montaje estimado</button>
+      </div>
+      <div id="mo-fija" class="mo-panel" style="display:none">
+        <div class="field"><label>Importe fijo por unidad</label><div class="suffix"><input id="fijaMO" type="text" inputmode="decimal"><span>€</span></div></div>
+      </div>
+
+      <div class="div"></div>
+      <div class="subhead">Tiempo de montaje</div>
+      <label class="chk" id="chkTipoL"><input type="checkbox" id="chkTipo"><span class="lab">Contar minutos base por tipo</span></label>
+      <label class="chk" id="chkTamL"><input type="checkbox" id="chkTam"><span class="lab">Contar minutos por m²</span></label>
+      <div id="subTam" style="margin:-3px 0 9px"><div class="suffix"><input id="minM2" type="text" inputmode="numeric"><span>min/m²</span></div></div>
+      <label class="chk" id="chkUniL"><input type="checkbox" id="chkUni"><span class="lab">Multiplicar por nº de unidades</span></label>
+      <div style="margin-top:11px" class="hint">Minutos base por tipo (edítalos a tu ritmo):</div>
+      <div id="tipos"></div>
+
+      <div class="div"></div>
+      <div class="subhead">Márgenes e impuestos</div>
+      <div class="row">
+        <div class="field"><label>Recargo material</label><div class="suffix"><input id="margenMat" type="text" inputmode="decimal"><span>%</span></div></div>
+        <div class="field"><label>Beneficio</label><div class="suffix"><input id="beneficio" type="text" inputmode="decimal"><span>%</span></div></div>
+        <div class="field"><label>IGIC</label><div class="suffix"><input id="igic" type="text" inputmode="decimal"><span>%</span></div></div>
+      </div>
+      <button class="addbtn" id="resetCfg" style="border-color:var(--line);color:var(--ink-soft);background:#fff">↺ Restablecer tarifas por defecto</button>
+    </div>
+  </details>
+
+  <!-- PARTIDAS -->
+  <div class="card">
+    <div class="sec-title"><span class="n">+</span>Partidas del presupuesto</div>
+    <div class="hint">Añade una partida por cada elemento distinto (ventana, puerta…). Las iguales van con su cantidad.</div>
+    <div id="lineas"></div>
+    <button class="addbtn" id="addLinea">+ Añadir partida</button>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="result card" id="resultado">
+    <div class="rt">Resumen del presupuesto</div>
+    <div class="br muted"><span class="k">Coste material</span><span class="v" id="rMat">0,00 €</span></div>
+    <div class="br muted"><span class="k">Mano de obra</span><span class="v" id="rMO">0,00 €</span></div>
+    <div class="time-box"><span class="icon">⏱️</span><div><div class="tt">Tiempo de montaje total</div><div class="tv" id="rTiempo">0 min</div></div></div>
+    <div class="br muted"><span class="k">Subtotal (coste)</span><span class="v" id="rSub">0,00 €</span></div>
+    <div class="br muted" id="rBenRow"><span class="k">Beneficio</span><span class="v" id="rBen">0,00 €</span></div>
+    <div class="br"><span class="k">Base imponible</span><span class="v" id="rBase">0,00 €</span></div>
+    <div class="br muted" id="rIgicRow"><span class="k">IGIC</span><span class="v" id="rIgic">0,00 €</span></div>
+    <div class="total"><span class="tl">Precio final</span><span class="tv" id="rTotal">0,00 €</span></div>
+  </div>
+
+  <div class="actions">
+    <button class="print" onclick="window.print()">🖨️ Imprimir / PDF</button>
+    <button id="nuevo">📄 Nuevo presupuesto</button>
+  </div>
+  <div class="actions" style="margin-top:10px">
+    <button id="aTrabajo" style="background:var(--steel);color:#fff;border-color:var(--steel);flex:1">🔧 Convertir en trabajo</button>
+  </div>
+  <div class="savemsg" id="savemsg"></div>
+</div>
+
+<!-- MODAL CONVERTIR EN TRABAJO -->
+<div class="ov-trab" id="ovTrab">
+  <div class="modal-trab">
+    <h3>🔧 Enviar a planificación</h3>
+    <p class="ptxt">Pon el nombre del cliente y pulsa el botón. Luego pega el código en la app de Planificación (botón «Importar presupuesto»).</p>
+    <label>Cliente</label>
+    <input type="text" id="trabCliente" placeholder="Nombre del cliente">
+    <label style="margin-top:10px">Código del trabajo</label>
+    <textarea id="trabCode" readonly placeholder="Pulsa «Generar código»…"></textarea>
+    <div class="trab-actions">
+      <button id="trabGen" class="tgen">Generar código</button>
+      <button id="trabCopy" class="tcopy">Copiar</button>
+    </div>
+    <div id="trabMsg" class="tmsg"></div>
+    <button id="trabClose" class="tclose">Cerrar</button>
+  </div>
+</div>
+
+<style>
+  .ov-trab{position:fixed;inset:0;background:rgba(28,27,24,.5);backdrop-filter:blur(3px);z-index:60;display:none;align-items:flex-end;justify-content:center}
+  .ov-trab.on{display:flex}
+  .modal-trab{background:var(--paper);width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:20px 17px 24px;animation:upT .22s ease}
+  @media(min-width:600px){.ov-trab{align-items:center}.modal-trab{border-radius:18px}}
+  @keyframes upT{from{transform:translateY(28px);opacity:.6}to{transform:translateY(0);opacity:1}}
+  .modal-trab h3{font-family:'Sora';font-weight:700;font-size:17px;color:var(--steel);margin-bottom:8px}
+  .modal-trab .ptxt{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;line-height:1.5}
+  .modal-trab label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+  .modal-trab input,.modal-trab textarea{width:100%;padding:11px 12px;font-size:14px;border:1.5px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font-family:'Public Sans'}
+  .modal-trab textarea{font-family:'JetBrains Mono';font-size:11.5px;min-height:70px;resize:vertical}
+  .modal-trab input:focus,.modal-trab textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(216,87,42,.13)}
+  .trab-actions{display:flex;gap:9px;margin-top:13px}
+  .trab-actions button{flex:1;padding:12px;border-radius:10px;font-family:'Sora';font-weight:700;font-size:13.5px;cursor:pointer}
+  .tgen{background:var(--accent);color:#fff;border:none}
+  .tcopy{background:#fff;border:1.5px solid var(--line);color:var(--steel)}
+  .trab-actions button:active{transform:translateY(1px)}
+  .tmsg{font-size:12px;color:var(--good);font-weight:600;text-align:center;margin-top:10px;min-height:16px}
+  .tclose{width:100%;margin-top:14px;padding:12px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink-soft);font-family:'Sora';font-weight:700;font-size:13px;cursor:pointer}
+</style>
+
+<!-- DOCUMENTO PARA IMPRIMIR -->
+<div id="printDoc">
+  <div class="pd-head">
+    <h2>Presupuesto</h2>
+    <div class="meta">Taller de aluminio y cristal<br>Tenerife · <span id="pdFecha"></span></div>
+  </div>
+  <table class="pd">
+    <thead><tr><th>Descripción</th><th class="r">Medidas</th><th class="r">Cant.</th><th class="r">Importe</th></tr></thead>
+    <tbody id="pdBody"></tbody>
+  </table>
+  <div class="pd-tot" id="pdTot"></div>
+  <div class="pd-foot">Tiempo estimado de montaje: <span id="pdTiempo"></span>. Presupuesto orientativo, válido salvo error u omisión.</div>
+</div>
+
+<script>
+/* ---------- helpers ---------- */
+function num(v){let s=String(v==null?'':v).trim().replace(/\s/g,'');
+  if(s.includes(',')&&s.includes('.')) s=s.lastIndexOf(',')>s.lastIndexOf('.')?s.replace(/\./g,'').replace(',','.'):s.replace(/,/g,'');
+  else if(s.includes(',')) s=s.replace(',','.');
+  const n=parseFloat(s);return isNaN(n)?0:n;}
+const eur=n=>n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+const m2f=n=>n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});
+function tiempoTxt(min){min=Math.round(min);if(min<60)return min+' min';const h=Math.floor(min/60),m=min%60;return m===0?h+' h':h+' h '+m+' min';}
+const $=id=>document.getElementById(id);
+const clone=o=>JSON.parse(JSON.stringify(o));
+
+/* ---------- modelo ---------- */
+const DEFAULT={
+  tarifas:[{c:'Cristal',p:'',base:'m2'},{c:'Perfilería de aluminio',p:'',base:'m2'},{c:'Herrajes y accesorios',p:'',base:'ud'}],
+  tipos:[{n:'Ventana fija',min:30},{n:'Ventana corredera',min:60},{n:'Ventana abatible / oscilobatiente',min:75},
+         {n:'Puerta abatible',min:90},{n:'Puerta corredera',min:120},{n:'Mampara / cerramiento',min:90},{n:'Otro',min:60}],
+  labor:{metodo:'pct',pct:'30',horas:'',precioHora:'25',fija:'50'},
+  montaje:{usarTipo:true,usarTam:false,minM2:'15',usarUni:true},
+  margenes:{margenMat:'0',beneficio:'0',igic:'7'},
+  lineas:[{c:'Ventana corredera',tipoIdx:1,ancho:'',alto:'',cant:'1'}]
+};
+const KEY='presupuesto_aluminio_v1';
+let S;
+function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.tarifas&&o.tipos)return o;}}catch(e){}return clone(DEFAULT);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));$('savemsg').innerHTML='✓ Tus tarifas se guardan en este dispositivo';}catch(e){$('savemsg').innerHTML='ⓘ Abre el archivo <b>descargado</b> para que recuerde tus tarifas';}}
+S=load();
+
+/* ---------- tarifas ---------- */
+function renderTarifas(){
+  const c=$('tarifas');c.innerHTML='';
+  S.tarifas.forEach((t,i)=>{
+    const d=document.createElement('div');d.className='tarifa';
+    d.innerHTML=`<input type="text" value="${(t.c||'').replace(/"/g,'&quot;')}" placeholder="Concepto" data-i="${i}" data-f="c">
+      <div class="suffix"><input type="text" inputmode="decimal" value="${t.p}" placeholder="0,00" data-i="${i}" data-f="p" style="padding-right:28px"><span style="font-size:11px">€</span></div>
+      <select data-i="${i}" data-f="base"><option value="m2"${t.base==='m2'?' selected':''}>por m²</option><option value="ud"${t.base==='ud'?' selected':''}>por ud</option><option value="fijo"${t.base==='fijo'?' selected':''}>fijo</option></select>
+      <button class="del" data-del="${i}">×</button>`;
+    c.appendChild(d);
+  });
+  c.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',e=>{S.tarifas[+e.target.dataset.i][e.target.dataset.f]=e.target.value;calc();}));
+  c.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',e=>{S.tarifas.splice(+e.target.dataset.del,1);renderTarifas();calc();}));
+}
+$('addTarifa').addEventListener('click',()=>{S.tarifas.push({c:'',p:'',base:'m2'});renderTarifas();calc();});
+
+/* ---------- tipos ---------- */
+function renderTipos(){
+  const c=$('tipos');c.innerHTML='';
+  S.tipos.forEach((t,i)=>{
+    const d=document.createElement('div');d.className='tline';
+    d.innerHTML=`<span>${t.n}</span><div class="suffix"><input type="text" inputmode="numeric" value="${t.min}" data-i="${i}" style="padding-right:42px"><span>min</span></div>`;
+    c.appendChild(d);
+  });
+  c.querySelectorAll('input').forEach(el=>el.addEventListener('input',e=>{S.tipos[+e.target.dataset.i].min=e.target.value;calc();}));
+}
+
+/* ---------- líneas ---------- */
+function tipoOptions(sel){return S.tipos.map((t,i)=>`<option value="${i}"${i===sel?' selected':''}>${t.n}</option>`).join('');}
+function renderLineas(){
+  const c=$('lineas');c.innerHTML='';
+  S.lineas.forEach((L,i)=>{
+    const d=document.createElement('div');d.className='linea';
+    d.innerHTML=`
+      <div class="lh"><input type="text" value="${(L.c||'').replace(/"/g,'&quot;')}" placeholder="Descripción (ej. Ventana salón)" data-i="${i}" data-f="c">
+        <button class="del" data-del="${i}">×</button></div>
+      <div class="field" style="margin-bottom:10px"><label>Tipo</label><select data-i="${i}" data-f="tipoIdx">${tipoOptions(L.tipoIdx)}</select></div>
+      <div class="g3">
+        <div><label>Ancho (m)</label><input type="text" inputmode="decimal" value="${L.ancho}" placeholder="1,20" data-i="${i}" data-f="ancho"></div>
+        <div><label>Alto (m)</label><input type="text" inputmode="decimal" value="${L.alto}" placeholder="1,10" data-i="${i}" data-f="alto"></div>
+        <div><label>Cantidad</label><input type="text" inputmode="numeric" value="${L.cant}" data-i="${i}" data-f="cant"></div>
+      </div>
+      <div class="ltot"><span class="l">Precio de la partida</span><span class="r" id="lp-${i}">0,00 €</span></div>
+      <div class="meta" id="lm-${i}"></div>`;
+    c.appendChild(d);
+  });
+  c.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',e=>{
+    const i=+e.target.dataset.i,f=e.target.dataset.f;
+    S.lineas[i][f]= f==='tipoIdx'? +e.target.value : e.target.value; calc();
+  }));
+  c.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',e=>{S.lineas.splice(+e.target.dataset.del,1);renderLineas();calc();}));
+}
+$('addLinea').addEventListener('click',()=>{S.lineas.push({c:'',tipoIdx:0,ancho:'',alto:'',cant:'1'});renderLineas();calc();});
+
+/* ---------- método mano de obra ---------- */
+function setMetodo(m){
+  S.labor.metodo=m;
+  document.querySelectorAll('#moSeg button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+  ['pct','horas','fija'].forEach(k=>$('mo-'+k).style.display=(k===m?'block':'none'));
+}
+document.querySelectorAll('#moSeg button').forEach(b=>b.addEventListener('click',()=>{setMetodo(b.dataset.m);calc();}));
+
+/* ---------- checkboxes montaje ---------- */
+function bindChk(id,key,labId,subId){
+  $(id).addEventListener('change',()=>{S.montaje[key]=$(id).checked;$(labId).classList.toggle('on',$(id).checked);if(subId)$(subId).style.display=$(id).checked?'block':'none';calc();});
+}
+bindChk('chkTipo','usarTipo','chkTipoL');
+bindChk('chkTam','usarTam','chkTamL','subTam');
+bindChk('chkUni','usarUni','chkUniL');
+$('usarTiempo').addEventListener('click',()=>{S.labor.horas=(lastMin/60).toLocaleString('es-ES',{maximumFractionDigits:2});$('horasMO').value=S.labor.horas;calc();});
+
+/* inputs simples -> estado */
+const SIMPLE=[['pctMO','labor','pct'],['horasMO','labor','horas'],['precioHora','labor','precioHora'],['fijaMO','labor','fija'],
+  ['minM2','montaje','minM2'],['margenMat','margenes','margenMat'],['beneficio','margenes','beneficio'],['igic','margenes','igic']];
+SIMPLE.forEach(([id,grp,key])=>$(id).addEventListener('input',()=>{S[grp][key]=$(id).value;calc();}));
+
+/* ---------- pintar estado en inputs ---------- */
+function fill(){
+  $('pctMO').value=S.labor.pct;$('horasMO').value=S.labor.horas;$('precioHora').value=S.labor.precioHora;$('fijaMO').value=S.labor.fija;
+  $('minM2').value=S.montaje.minM2;$('margenMat').value=S.margenes.margenMat;$('beneficio').value=S.margenes.beneficio;$('igic').value=S.margenes.igic;
+  $('chkTipo').checked=S.montaje.usarTipo;$('chkTam').checked=S.montaje.usarTam;$('chkUni').checked=S.montaje.usarUni;
+  $('chkTipoL').classList.toggle('on',S.montaje.usarTipo);$('chkTamL').classList.toggle('on',S.montaje.usarTam);$('chkUniL').classList.toggle('on',S.montaje.usarUni);
+  $('subTam').style.display=S.montaje.usarTam?'block':'none';
+  setMetodo(S.labor.metodo);
+}
+
+/* ---------- CÁLCULO ---------- */
+let lastMin=0;
+function calc(){
+  const mm=num(S.margenes.margenMat);
+  let costeMat=0,totalMin=0,totalUds=0;
+  const lineData=[];
+  S.lineas.forEach((L,i)=>{
+    const a=num(L.ancho),h=num(L.alto),cant=Math.max(0,num(L.cant));
+    const m2u=a*h, m2t=m2u*cant;
+    totalUds+=cant;
+    let cm=0;
+    S.tarifas.forEach(t=>{const p=num(t.p);cm+= t.base==='m2'?p*m2t : t.base==='ud'?p*cant : p;});
+    const cmFinal=cm*(1+mm/100);
+    costeMat+=cmFinal;
+    const tipoMin = S.tipos[L.tipoIdx]? num(S.tipos[L.tipoIdx].min):0;
+    let porUd=0;
+    if(S.montaje.usarTipo) porUd+=tipoMin;
+    if(S.montaje.usarTam)  porUd+=num(S.montaje.minM2)*m2u;
+    const tMin = porUd*(S.montaje.usarUni?(cant||1):1);
+    totalMin+=tMin;
+    lineData.push({L,m2u,m2t,cant,cmFinal,tMin});
+    const lm=$('lm-'+i); if(lm) lm.textContent=`${m2f(m2u)} m²/ud · ${m2f(m2t)} m² · ${tiempoTxt(tMin)}`;
+  });
+  lastMin=totalMin;
+
+  let mo=0;
+  if(S.labor.metodo==='pct')   mo=costeMat*num(S.labor.pct)/100;
+  if(S.labor.metodo==='horas') mo=num(S.labor.horas)*num(S.labor.precioHora);
+  if(S.labor.metodo==='fija')  mo=num(S.labor.fija)*totalUds;
+
+  const subtotal=costeMat+mo;
+  const ben=subtotal*num(S.margenes.beneficio)/100;
+  const base=subtotal+ben;
+  const igicPct=num(S.margenes.igic);
+  const igic=base*igicPct/100;
+  const total=base+igic;
+
+  lineData.forEach((d,i)=>{
+    const share = costeMat>0 ? d.cmFinal/costeMat : (lineData.length?1/lineData.length:0);
+    d.precio=base*share;
+    const el=$('lp-'+i); if(el) el.textContent=eur(d.precio);
+  });
+
+  $('rMat').textContent=eur(costeMat);
+  $('rMO').textContent=eur(mo);
+  $('rTiempo').textContent=tiempoTxt(totalMin);
+  $('rSub').textContent=eur(subtotal);
+  $('rBen').textContent=eur(ben);$('rBenRow').style.display=ben>0?'flex':'none';
+  $('rBase').textContent=eur(base);
+  $('rIgic').textContent=eur(igic);
+  document.querySelector('#rIgicRow .k').textContent='IGIC ('+m2f(igicPct).replace(',00','')+'%)';
+  $('rTotal').textContent=eur(total);
+
+  buildPrint(lineData,costeMat,mo,ben,base,igic,igicPct,total,totalMin);
+  save();
+}
+
+function buildPrint(ld,costeMat,mo,ben,base,igic,igicPct,total,totalMin){
+  $('pdFecha').textContent=new Date().toLocaleDateString('es-ES');
+  $('pdBody').innerHTML=ld.map(d=>{
+    const med=(num(d.L.ancho)&&num(d.L.alto))?`${m2f(num(d.L.ancho))}×${m2f(num(d.L.alto))} m`:'—';
+    const nom=d.L.c||(S.tipos[d.L.tipoIdx]&&S.tipos[d.L.tipoIdx].n)||'Partida';
+    return `<tr><td>${nom}</td><td class="r">${med}</td><td class="r">${d.cant||0}</td><td class="r">${eur(d.precio||0)}</td></tr>`;
+  }).join('');
+  let t=`<div><span>Material</span><span>${eur(costeMat)}</span></div><div><span>Mano de obra</span><span>${eur(mo)}</span></div>`;
+  if(ben>0)t+=`<div><span>Beneficio</span><span>${eur(ben)}</span></div>`;
+  t+=`<div><span>Base imponible</span><span>${eur(base)}</span></div><div><span>IGIC ${m2f(igicPct).replace(',00','')}%</span><span>${eur(igic)}</span></div><div class="grand"><span>TOTAL</span><span>${eur(total)}</span></div>`;
+  $('pdTot').innerHTML=t;
+  $('pdTiempo').textContent=tiempoTxt(totalMin);
+}
+
+/* ---------- botones ---------- */
+$('resetCfg').addEventListener('click',()=>{if(confirm('¿Restablecer todas las tarifas y ajustes por defecto?')){const lin=S.lineas;S=clone(DEFAULT);S.lineas=lin;renderTarifas();renderTipos();fill();calc();}});
+$('nuevo').addEventListener('click',()=>{if(confirm('¿Empezar un presupuesto nuevo? (se mantienen tus tarifas)')){S.lineas=[{c:'',tipoIdx:0,ancho:'',alto:'',cant:'1'}];renderLineas();calc();window.scrollTo(0,0);}});
+
+/* ---------- convertir en trabajo (handoff a planificación) ---------- */
+const INBOX='trabajos_taller_inbox';
+function resumenTrabajo(){
+  // descripción a partir de las partidas
+  const partes=S.lineas.filter(L=>L.c||num(L.ancho)||num(L.alto)).map(L=>{
+    const cant=Math.max(0,num(L.cant));
+    const nom=L.c||(S.tipos[L.tipoIdx]&&S.tipos[L.tipoIdx].n)||'Elemento';
+    return (cant>1?cant+'× ':'')+nom;
+  });
+  // materiales con precio puesto -> lista de compra
+  const mats=S.tarifas.filter(t=>t.c&&num(t.p)>0).map(t=>t.c);
+  const totalTxt=$('rTotal').textContent;
+  const total=num(totalTxt);
+  return {cliente:$('trabCliente').value.trim(),desc:partes.join(' · '),importe:total,mats:mats,
+    notas:'Importado del presupuesto · '+new Date().toLocaleDateString('es-ES')};
+}
+$('aTrabajo').addEventListener('click',()=>{$('trabCliente').value='';$('trabCode').value='';$('trabMsg').textContent='';$('ovTrab').classList.add('on');});
+$('trabClose').addEventListener('click',()=>$('ovTrab').classList.remove('on'));
+$('ovTrab').addEventListener('click',e=>{if(e.target===$('ovTrab'))$('ovTrab').classList.remove('on');});
+$('trabGen').addEventListener('click',()=>{
+  const o=resumenTrabajo();
+  const code=btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+  $('trabCode').value=code;
+  // intento de handoff automático por localStorage compartido
+  try{const r=localStorage.getItem(INBOX);const arr=r?JSON.parse(r):[];arr.push(o);localStorage.setItem(INBOX,JSON.stringify(arr));
+    $('trabMsg').textContent='✓ Código listo. Si abres la app de Planificación, puede aparecer solo.';}
+  catch(e){$('trabMsg').textContent='✓ Código listo. Cópialo y pégalo en Planificación.';}
+});
+$('trabCopy').addEventListener('click',()=>{
+  const t=$('trabCode');if(!t.value){$('trabMsg').textContent='Primero pulsa «Generar código».';return;}
+  t.select();t.setSelectionRange(0,99999);
+  try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}
+  $('trabMsg').textContent='✓ Copiado. Pégalo en la app de Planificación.';
+});
+
+/* ---------- init ---------- */
+renderTarifas();renderTipos();renderLineas();fill();calc();
+</script>
+</body>
+</html>
